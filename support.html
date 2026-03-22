@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support — BillCast</title>
+    <meta name="description" content="Get help with BillCast. Find answers to frequently asked questions or contact our support team.">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="canonical" href="https://billcast.store/support">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --surface: rgba(255, 255, 255, 0.08);
+            --text: #f8fafc;
+            --text-secondary: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+            z-index: 0;
+        }
+        .bg-orb-1 { width: 400px; height: 400px; background: #6366f1; top: -100px; right: -100px; }
+        .bg-orb-2 { width: 300px; height: 300px; background: #8b5cf6; bottom: 20%; left: -80px; animation-delay: -7s; }
+        .bg-orb-3 { width: 250px; height: 250px; background: #06b6d4; bottom: -50px; right: 20%; animation-delay: -14s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        nav {
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            color: var(--text);
+        }
+        .logo span { color: var(--primary-light); }
+        .nav-links { display: flex; gap: 4px; }
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        nav a:hover { color: var(--text); background: var(--surface); }
+        nav a.active { color: var(--text); background: var(--surface); }
+
+        .page-header {
+            text-align: center;
+            padding: 80px 0 40px;
+        }
+        .page-header h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+        }
+        .page-header h1 .gradient {
+            background: linear-gradient(135deg, var(--primary-light), #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .contact-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            padding: 32px 40px;
+            backdrop-filter: blur(16px);
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.1);
+        }
+        .contact-card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .contact-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .contact-card .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .contact-card .btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .faq-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .faq-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 28px 32px;
+            backdrop-filter: blur(16px);
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+        .faq-item:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+        }
+        .faq-item h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+        .faq-item p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .faq-item a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+        .faq-item a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 40px;
+        }
+        footer a { color: var(--primary-light); text-decoration: none; }
+
+        @media (max-width: 640px) {
+            .page-header { padding: 60px 0 24px; }
+            .contact-card { padding: 24px; }
+            .faq-item { padding: 20px 24px; }
+            .nav-links { gap: 0; }
+            nav a { padding: 8px 10px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <div class="container">
+        <nav>
+            <a href="/" class="logo">Bill<span>Cast</span></a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/privacy">Privacy</a>
+                <a href="/support" class="active">Support</a>
+            </div>
+        </nav>
+
+        <section class="page-header">
+            <h1><span class="gradient">Support</span></h1>
+            <p>Need help with BillCast? Check the FAQs below or reach out directly.</p>
+        </section>
+
+        <div class="contact-card">
+            <h2>Get in Touch</h2>
+            <p>Have a question, bug report, or feature request? We'd love to hear from you.</p>
+            <a href="mailto:support@billcast.store" class="btn">Email Support</a>
+        </div>
+
+        <section class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <h3>How does sync work?</h3>
+                <p>BillCast uses iCloud to sync your data automatically across all your devices. As long as you're signed in with the same Apple ID and have iCloud enabled, your bills, subscriptions, and receipts will stay in sync on your Mac and iPhone.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Is my financial data safe?</h3>
+                <p>Yes. All your data is stored on-device and synced through Apple's iCloud infrastructure, which uses end-to-end encryption. BillCast does not send any data to third-party servers. No analytics or tracking SDKs are included in the app. Your financial information stays entirely under your control.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How do I cancel my subscription?</h3>
+                <p>BillCast subscriptions are managed through Apple. To cancel, go to <strong>Settings &rarr; Apple ID &rarr; Subscriptions</strong> on your iPhone, or <strong>System Settings &rarr; Apple ID &rarr; Media & Purchases &rarr; Subscriptions</strong> on your Mac. You can cancel anytime and continue using premium features until the end of your billing period.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How do I delete my data?</h3>
+                <p>You can delete all your BillCast data by deleting the app from your device. You can also use the data management options within the app under <strong>Settings</strong> to selectively remove bills, receipts, or account data. Data in your iCloud container can be managed through your iCloud account settings.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What platforms are supported?</h3>
+                <p>BillCast is available for macOS 26+ and iOS 26+. Both versions are included with a single purchase or subscription, and your data syncs seamlessly between them via iCloud.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 BillCast. Built with care for Mac & iOS.</p>
+            <p style="margin-top:8px;"><a href="/privacy">Privacy Policy</a> · <a href="/support">Support</a> · <a href="mailto:support@billcast.store">Contact</a></p>
+        </footer>
+    </div>
+</body>
+</html>

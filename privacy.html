@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — BillCast</title>
+    <meta name="description" content="BillCast Privacy Policy. Your data stays on your device and in your iCloud. No third-party tracking, no analytics SDKs.">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="canonical" href="https://billcast.store/privacy">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --surface: rgba(255, 255, 255, 0.08);
+            --text: #f8fafc;
+            --text-secondary: #94a3b8;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+            z-index: 0;
+        }
+        .bg-orb-1 { width: 400px; height: 400px; background: #6366f1; top: -100px; right: -100px; }
+        .bg-orb-2 { width: 300px; height: 300px; background: #8b5cf6; bottom: 20%; left: -80px; animation-delay: -7s; }
+        .bg-orb-3 { width: 250px; height: 250px; background: #06b6d4; bottom: -50px; right: 20%; animation-delay: -14s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        nav {
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            color: var(--text);
+        }
+        .logo span { color: var(--primary-light); }
+        .nav-links { display: flex; gap: 4px; }
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        nav a:hover { color: var(--text); background: var(--surface); }
+        nav a.active { color: var(--text); background: var(--surface); }
+
+        .page-header {
+            text-align: center;
+            padding: 80px 0 40px;
+        }
+        .page-header h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+        }
+        .page-header h1 .gradient {
+            background: linear-gradient(135deg, var(--primary-light), #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .content-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(16px);
+            margin-bottom: 24px;
+        }
+
+        .content-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary-light);
+        }
+
+        .content-card p,
+        .content-card li {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .content-card ul {
+            list-style: none;
+            margin: 12px 0;
+        }
+
+        .content-card li {
+            padding: 6px 0;
+        }
+
+        .content-card li::before {
+            content: "✓ ";
+            color: var(--primary-light);
+            font-weight: 700;
+        }
+
+        .content-card a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+        .content-card a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 40px;
+        }
+        footer a { color: var(--primary-light); text-decoration: none; }
+
+        @media (max-width: 640px) {
+            .page-header { padding: 60px 0 24px; }
+            .content-card { padding: 24px; }
+            .nav-links { gap: 0; }
+            nav a { padding: 8px 10px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <div class="container">
+        <nav>
+            <a href="/" class="logo">Bill<span>Cast</span></a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/privacy" class="active">Privacy</a>
+                <a href="/support">Support</a>
+            </div>
+        </nav>
+
+        <section class="page-header">
+            <h1><span class="gradient">Privacy Policy</span></h1>
+            <p>Effective March 2026</p>
+        </section>
+
+        <div class="content-card">
+            <h2>Overview</h2>
+            <p>BillCast is developed by Manohar Nikkam. This privacy policy explains how BillCast handles your data. The short version: your data stays on your device and in your personal iCloud account. We do not collect, store, or transmit your personal information to any server.</p>
+        </div>
+
+        <div class="content-card">
+            <h2>Data Storage</h2>
+            <ul>
+                <li>All data is stored on-device and synced via iCloud using Apple's infrastructure</li>
+                <li>No data is sent to third-party servers</li>
+                <li>Receipt images (premium feature) are stored in your personal iCloud container</li>
+                <li>Your data syncs automatically across your devices using the same Apple ID</li>
+            </ul>
+        </div>
+
+        <div class="content-card">
+            <h2>Analytics & Tracking</h2>
+            <ul>
+                <li>No analytics or tracking SDKs are included in the app</li>
+                <li>No personally identifiable information is collected by the developer</li>
+                <li>We do not use cookies, fingerprinting, or any form of usage tracking</li>
+            </ul>
+        </div>
+
+        <div class="content-card">
+            <h2>Email Scanning</h2>
+            <p>If you enable the email scanning feature, BillCast processes your emails entirely on-device. Email content is analyzed locally to detect bills and payment confirmations. Your email content never leaves your device and is never transmitted to any external server.</p>
+        </div>
+
+        <div class="content-card">
+            <h2>Deleting Your Data</h2>
+            <p>You can delete all of your BillCast data at any time by deleting the app from your device. You can also use the data management options within the app's Settings to selectively remove data. Removing the app will remove all locally stored data. Data stored in your iCloud container can be managed through your iCloud account settings.</p>
+        </div>
+
+        <div class="content-card">
+            <h2>Contact</h2>
+            <p>If you have any questions about this privacy policy, please visit our <a href="/support">Support page</a> or email us at <a href="mailto:support@billcast.store">support@billcast.store</a>.</p>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 BillCast. Built with care for Mac & iOS.</p>
+            <p style="margin-top:8px;"><a href="/privacy">Privacy Policy</a> · <a href="/support">Support</a> · <a href="mailto:support@billcast.store">Contact</a></p>
+        </footer>
+    </div>
+</body>
+</html>
