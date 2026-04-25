@@ -8,312 +8,447 @@
     <meta name="theme-color" content="#6366f1">
     <link rel="canonical" href="https://manoharnikkam.github.io/billcast-site/">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --surface: rgba(255, 255, 255, 0.08);
-            --text: #f8fafc;
-            --text-secondary: #94a3b8;
-            --glass-bg: rgba(255, 255, 255, 0.06);
-            --glass-border: rgba(255, 255, 255, 0.12);
+            --indigo:      #6366f1;
+            --indigo-light:#818cf8;
+            --indigo-dim:  rgba(99,102,241,0.15);
+            --violet:      #8b5cf6;
+            --cyan:        #22d3ee;
+            --text:        #f1f5f9;
+            --text-muted:  #94a3b8;
+            --text-faint:  #64748b;
+            --bg:          #0a0e1a;
+            --surface:     rgba(255,255,255,0.04);
+            --surface-hover: rgba(255,255,255,0.07);
+            --border:      rgba(255,255,255,0.08);
+            --border-strong: rgba(255,255,255,0.14);
         }
 
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', sans-serif;
+            background: var(--bg);
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Animated background orbs */
-        .bg-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: float 20s ease-in-out infinite;
+        /* ── Noise texture overlay ─────────────────────────── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
             z-index: 0;
         }
-        .bg-orb-1 { width: 400px; height: 400px; background: #6366f1; top: -100px; right: -100px; }
-        .bg-orb-2 { width: 300px; height: 300px; background: #8b5cf6; bottom: 20%; left: -80px; animation-delay: -7s; }
-        .bg-orb-3 { width: 250px; height: 250px; background: #06b6d4; bottom: -50px; right: 20%; animation-delay: -14s; }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.05); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
+        /* ── Ambient gradient blobs ────────────────────────── */
+        .ambient {
+            position: fixed; border-radius: 50%;
+            pointer-events: none; z-index: 0;
+            filter: blur(120px);
+        }
+        .ambient-1 {
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(99,102,241,0.18), transparent 70%);
+            top: -200px; right: -150px;
+        }
+        .ambient-2 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(139,92,246,0.12), transparent 70%);
+            bottom: 10%; left: -150px;
+        }
+        .ambient-3 {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(34,211,238,0.08), transparent 70%);
+            bottom: 5%; right: 15%;
         }
 
+        /* ── Layout ────────────────────────────────────────── */
         .container {
-            max-width: 1100px;
+            max-width: 1080px;
             margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 1;
+            padding: 0 28px;
+            position: relative; z-index: 1;
         }
 
-        /* Nav */
+        /* ── Nav ───────────────────────────────────────────── */
         nav {
-            padding: 24px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: sticky; top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px) saturate(1.4);
+            -webkit-backdrop-filter: blur(20px) saturate(1.4);
+            background: rgba(10,14,26,0.7);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1080px; margin: 0 auto; padding: 0 28px;
+            display: flex; justify-content: space-between; align-items: center;
+            height: 60px;
         }
         .logo {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            font-size: 18px; font-weight: 700;
+            letter-spacing: -0.4px;
+            text-decoration: none; color: var(--text);
         }
-        .logo span { color: var(--primary-light); }
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            transition: all 0.2s;
+        .logo em { font-style: normal; color: var(--indigo-light); }
+        .nav-links { display: flex; align-items: center; gap: 4px; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none;
+            font-size: 14px; font-weight: 500;
+            padding: 7px 14px; border-radius: 8px;
+            transition: color 0.15s, background 0.15s;
         }
-        nav a:hover { color: var(--text); background: var(--surface); }
+        .nav-links a:hover { color: var(--text); background: var(--surface-hover); }
+        .nav-cta {
+            background: var(--indigo) !important;
+            color: white !important;
+            margin-left: 8px;
+        }
+        .nav-cta:hover { background: var(--indigo-light) !important; }
 
-        /* Hero */
+        /* ── Hero ──────────────────────────────────────────── */
         .hero {
+            padding: 120px 0 96px;
             text-align: center;
-            padding: 100px 0 80px;
         }
         .badge {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 100px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            font-size: 13px;
-            color: var(--primary-light);
-            margin-bottom: 24px;
-            backdrop-filter: blur(12px);
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 5px 14px; border-radius: 100px;
+            background: var(--indigo-dim);
+            border: 1px solid rgba(99,102,241,0.3);
+            font-size: 12.5px; font-weight: 500;
+            color: var(--indigo-light);
+            letter-spacing: 0.2px;
+            margin-bottom: 32px;
         }
-        h1 {
-            font-size: clamp(40px, 6vw, 64px);
+        .badge-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--indigo-light);
+            box-shadow: 0 0 6px var(--indigo-light);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 68px);
             font-weight: 800;
-            letter-spacing: -1.5px;
-            line-height: 1.1;
-            margin-bottom: 20px;
+            letter-spacing: -2px;
+            line-height: 1.08;
+            margin-bottom: 22px;
         }
-        h1 .gradient {
-            background: linear-gradient(135deg, var(--primary-light), #06b6d4);
+        .hero h1 .line2 {
+            background: linear-gradient(100deg, var(--indigo-light) 0%, var(--cyan) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .hero p {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 520px;
-            margin: 0 auto 40px;
-            line-height: 1.6;
-        }
-        .trust-line {
-            margin-top: 20px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .trust-line strong {
-            color: var(--text);
+        .hero-desc {
+            font-size: 17px; line-height: 1.7;
+            color: var(--text-muted);
+            max-width: 480px; margin: 0 auto 40px;
         }
         .cta-group {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
+            display: flex; gap: 12px;
+            justify-content: center; flex-wrap: wrap;
+            margin-bottom: 28px;
         }
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 13px 24px; border-radius: 11px;
+            font-size: 15px; font-weight: 600;
+            text-decoration: none; border: none; cursor: pointer;
+            transition: all 0.18s ease;
+            letter-spacing: -0.2px;
         }
         .btn-primary {
-            background: var(--primary);
-            color: white;
+            background: var(--indigo); color: white;
+            box-shadow: 0 0 0 1px rgba(99,102,241,0.5), 0 4px 20px rgba(99,102,241,0.25);
         }
-        .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); }
+        .btn-primary:hover {
+            background: var(--indigo-light);
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 1px rgba(129,140,248,0.6), 0 8px 28px rgba(99,102,241,0.35);
+        }
         .btn-secondary {
-            background: var(--glass-bg);
+            background: var(--surface);
             color: var(--text);
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--border-strong);
             backdrop-filter: blur(12px);
         }
-        .btn-secondary:hover { background: var(--surface); }
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        .trust-pills {
+            display: flex; align-items: center; justify-content: center;
+            flex-wrap: wrap; gap: 6px;
+        }
+        .trust-pill {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 12.5px; color: var(--text-faint);
+            padding: 4px 10px; border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+        .trust-pill svg { opacity: 0.6; }
 
-        /* Features */
-        .features {
-            padding: 80px 0;
+        /* ── Divider ───────────────────────────────────────── */
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 0;
         }
-        .features h2 {
-            text-align: center;
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 12px;
+
+        /* ── Features ──────────────────────────────────────── */
+        .features { padding: 100px 0; }
+        .section-header { text-align: center; margin-bottom: 64px; }
+        .section-label {
+            display: inline-block;
+            font-size: 12px; font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--indigo-light); margin-bottom: 14px;
         }
-        .features .subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 60px;
-            font-size: 16px;
+        .section-header h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 700; letter-spacing: -1px;
+            line-height: 1.15; margin-bottom: 12px;
         }
+        .section-header p {
+            font-size: 16px; color: var(--text-muted); line-height: 1.65;
+            max-width: 440px; margin: 0 auto;
+        }
+
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--border);
         }
         .feature-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 28px;
-            backdrop-filter: blur(16px);
-            transition: all 0.3s;
+            background: var(--bg);
+            padding: 32px 28px;
+            transition: background 0.2s;
         }
-        .feature-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(99, 102, 241, 0.3);
-            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
-        }
+        .feature-card:hover { background: rgba(255,255,255,0.025); }
         .feature-icon {
-            width: 44px;
-            height: 44px;
+            width: 40px; height: 40px;
             border-radius: 10px;
-            background: linear-gradient(135deg, var(--primary), #8b5cf6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            margin-bottom: 16px;
+            background: var(--indigo-dim);
+            border: 1px solid rgba(99,102,241,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; margin-bottom: 18px;
         }
         .feature-card h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 16px; font-weight: 600;
+            letter-spacing: -0.3px; margin-bottom: 8px;
         }
         .feature-card p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.6;
+            font-size: 14px; color: var(--text-muted);
+            line-height: 1.65;
         }
 
-        /* Pricing */
-        .pricing {
-            padding: 80px 0;
-            text-align: center;
-        }
-        .pricing h2 {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-        .pricing .subtitle {
-            color: var(--text-secondary);
-            margin-bottom: 48px;
-        }
-        .pricing-cards {
+        /* ── Pricing ───────────────────────────────────────── */
+        .pricing { padding: 100px 0; }
+        .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            max-width: 700px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 680px;
             margin: 0 auto;
         }
         .pricing-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
+            border-radius: 18px;
             padding: 32px;
-            backdrop-filter: blur(16px);
-            text-align: left;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            display: flex; flex-direction: column;
         }
         .pricing-card.featured {
-            border-color: var(--primary);
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
+            background: linear-gradient(160deg, rgba(99,102,241,0.12) 0%, rgba(139,92,246,0.06) 100%);
+            border-color: rgba(99,102,241,0.35);
+            box-shadow: 0 0 0 1px rgba(99,102,241,0.12) inset,
+                        0 20px 60px rgba(99,102,241,0.1);
         }
-        .pricing-card .tier { font-size: 14px; color: var(--primary-light); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-        .pricing-card .price { font-size: 40px; font-weight: 800; margin-bottom: 4px; }
-        .pricing-card .price span { font-size: 16px; font-weight: 400; color: var(--text-secondary); }
-        .pricing-card .price-alt { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
-        .pricing-card .save-badge { display: inline-block; background: linear-gradient(135deg, var(--primary), #8b5cf6); color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-        .pricing-card .desc { color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; margin-top: 8px; }
-        .pricing-card ul { list-style: none; margin-bottom: 24px; }
-        .pricing-card li { padding: 6px 0; font-size: 14px; color: var(--text-secondary); }
-        .pricing-card li::before { content: "✓ "; color: var(--primary-light); font-weight: 700; }
+        .tier-row {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .tier-name {
+            font-size: 12px; font-weight: 700; letter-spacing: 1px;
+            text-transform: uppercase; color: var(--text-muted);
+        }
+        .featured .tier-name { color: var(--indigo-light); }
+        .save-pill {
+            background: linear-gradient(135deg, var(--indigo), var(--violet));
+            color: white; font-size: 10.5px; font-weight: 700;
+            padding: 3px 9px; border-radius: 100px;
+            letter-spacing: 0.3px;
+        }
+        .price-block { margin-bottom: 6px; }
+        .price-main {
+            font-size: 44px; font-weight: 800;
+            letter-spacing: -2px; line-height: 1;
+        }
+        .price-main sup {
+            font-size: 20px; font-weight: 600;
+            vertical-align: super; letter-spacing: 0;
+        }
+        .price-main sub {
+            font-size: 16px; font-weight: 400;
+            color: var(--text-muted); letter-spacing: 0;
+            vertical-align: baseline;
+        }
+        .price-alt {
+            font-size: 12.5px; color: var(--text-faint);
+            margin-bottom: 16px;
+        }
+        .price-desc {
+            font-size: 13.5px; color: var(--text-muted);
+            margin-bottom: 24px; line-height: 1.55;
+        }
+        .feature-list {
+            list-style: none; margin-bottom: 28px; flex: 1;
+        }
+        .feature-list li {
+            display: flex; align-items: flex-start; gap: 9px;
+            padding: 6px 0;
+            font-size: 13.5px; color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+        .feature-list li:last-child { border-bottom: none; }
+        .feature-list li::before {
+            content: '';
+            width: 16px; height: 16px; flex-shrink: 0;
+            margin-top: 1px;
+            background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7.5' stroke='rgba(99,102,241,0.4)'/%3E%3Cpath d='M5 8l2 2 4-4' stroke='%236366f1' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+        }
 
-        /* Footer */
+        /* ── Footer ────────────────────────────────────────── */
         footer {
-            padding: 40px 0;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 14px;
-            border-top: 1px solid var(--glass-border);
+            border-top: 1px solid var(--border);
+            padding: 36px 0;
         }
-        footer a { color: var(--primary-light); text-decoration: none; }
+        .footer-inner {
+            max-width: 1080px; margin: 0 auto; padding: 0 28px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 16px;
+        }
+        .footer-logo {
+            font-size: 15px; font-weight: 600;
+            text-decoration: none; color: var(--text-muted);
+        }
+        .footer-logo em { font-style: normal; color: var(--indigo-light); }
+        .footer-links {
+            display: flex; align-items: center; gap: 4px;
+        }
+        .footer-links a {
+            color: var(--text-faint); text-decoration: none;
+            font-size: 13px; padding: 5px 10px; border-radius: 6px;
+            transition: color 0.15s;
+        }
+        .footer-links a:hover { color: var(--text-muted); }
+        .footer-copy {
+            font-size: 12.5px; color: var(--text-faint);
+        }
 
-        @media (max-width: 640px) {
-            .hero { padding: 60px 0 40px; }
+        /* ── Responsive ────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .feature-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-links .nav-cta { display: none; }
+        }
+        @media (max-width: 560px) {
+            .hero { padding: 80px 0 64px; }
             .feature-grid { grid-template-columns: 1fr; }
-            .pricing-cards { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .footer-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .footer-links { flex-wrap: wrap; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="bg-orb bg-orb-3"></div>
+    <div class="ambient ambient-1"></div>
+    <div class="ambient ambient-2"></div>
+    <div class="ambient ambient-3"></div>
 
-    <div class="container">
-        <nav>
-            <a href="./index.html" class="logo" style="text-decoration:none;color:var(--text);">Bill<span>Cast</span></a>
-            <div>
+    <!-- Nav -->
+    <nav>
+        <div class="nav-inner">
+            <a href="./index.html" class="logo">Bill<em>Cast</em></a>
+            <div class="nav-links">
                 <a href="#features">Features</a>
                 <a href="#pricing">Pricing</a>
                 <a href="./privacy.html">Privacy</a>
                 <a href="./support.html">Support</a>
+                <a href="#" class="nav-cta btn">Download</a>
             </div>
-        </nav>
+        </div>
+    </nav>
 
+    <!-- Hero -->
+    <div class="container">
         <section class="hero">
-            <div class="badge">Now in App Store Review — Mac &amp; iOS</div>
-            <h1>Predict Your Bills.<br><span class="gradient">Protect Your Wallet.</span></h1>
-            <p>Find the subscriptions you forgot about, predict upcoming expenses, and get alerted before prices increase — without handing over your bank credentials.</p>
+            <div class="badge">
+                <span class="badge-dot"></span>
+                Now in App Store Review — Mac &amp; iOS
+            </div>
+            <h1>
+                Predict Your Bills.<br>
+                <span class="line2">Protect Your Wallet.</span>
+            </h1>
+            <p class="hero-desc">
+                Find forgotten subscriptions, predict upcoming expenses, and get alerted
+                before prices increase — without handing over your bank credentials.
+            </p>
             <div class="cta-group">
                 <a href="#" class="btn btn-primary">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                     Download for Mac
                 </a>
                 <a href="#" class="btn btn-secondary">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 1h-8A2.5 2.5 0 005 3.5v17A2.5 2.5 0 007.5 23h8a2.5 2.5 0 002.5-2.5v-17A2.5 2.5 0 0015.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 1h-8A2.5 2.5 0 005 3.5v17A2.5 2.5 0 007.5 23h8a2.5 2.5 0 002.5-2.5v-17A2.5 2.5 0 0015.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"/></svg>
                     Get on iPhone
                 </a>
             </div>
-            <p class="trust-line">🔒 <strong>No bank login. Ever.</strong> &nbsp;·&nbsp; Works with Gmail &amp; Outlook &nbsp;·&nbsp; Free to start</p>
+            <div class="trust-pills">
+                <span class="trust-pill">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    No bank login. Ever.
+                </span>
+                <span class="trust-pill">Works with Gmail &amp; Outlook</span>
+                <span class="trust-pill">On-device AI</span>
+                <span class="trust-pill">Free to start</span>
+            </div>
         </section>
+    </div>
 
+    <hr class="section-divider">
+
+    <!-- Features -->
+    <div class="container">
         <section class="features" id="features">
-            <h2>Smart Money Tracking</h2>
-            <p class="subtitle">Everything runs on your device. Your data never touches our servers.</p>
+            <div class="section-header">
+                <span class="section-label">Features</span>
+                <h2>Smart Money Tracking</h2>
+                <p>Everything runs on your device. Your data never touches our servers.</p>
+            </div>
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-icon">📧</div>
                     <h3>Email Detection</h3>
-                    <p>Connect Gmail or Outlook and BillCast finds subscriptions you forgot about — automatically. Reads payment receipts only. No bank login. Disconnect anytime in Settings.</p>
+                    <p>Connect Gmail or Outlook and BillCast automatically finds subscriptions you forgot about — reading payment receipts only. Disconnect anytime.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🔮</div>
@@ -327,13 +462,13 @@
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📊</div>
-                    <h3>Trends & Insights</h3>
-                    <p>Interactive charts show spending trends, category breakdowns, and seasonal patterns. Get alerts when prices creep up.</p>
+                    <h3>Trends &amp; Insights</h3>
+                    <p>Interactive charts show spending trends, category breakdowns, and seasonal patterns. Get alerts when prices creep up on you.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📅</div>
                     <h3>Bill Calendar</h3>
-                    <p>Heat map calendar shows your expensive days at a glance. Never be surprised by a cluster of bills hitting the same week.</p>
+                    <p>Heat map calendar shows expensive days at a glance. Never be surprised by a cluster of bills hitting the same week.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🔒</div>
@@ -342,50 +477,76 @@
                 </div>
             </div>
         </section>
+    </div>
 
+    <hr class="section-divider">
+
+    <!-- Pricing -->
+    <div class="container">
         <section class="pricing" id="pricing">
-            <h2>Simple Pricing</h2>
-            <p class="subtitle">Start free. Upgrade when you need more.</p>
-            <div class="pricing-cards">
+            <div class="section-header">
+                <span class="section-label">Pricing</span>
+                <h2>Simple Pricing</h2>
+                <p>Start free. Upgrade when you need more.</p>
+            </div>
+            <div class="pricing-grid">
+                <!-- Free -->
                 <div class="pricing-card">
-                    <div class="tier">Free</div>
-                    <div class="price">$0</div>
-                    <div class="desc">Get started tracking bills</div>
-                    <ul>
+                    <div class="tier-row">
+                        <span class="tier-name">Free</span>
+                    </div>
+                    <div class="price-block">
+                        <div class="price-main">$0</div>
+                    </div>
+                    <p class="price-desc">Track your first bills at no cost.</p>
+                    <ul class="feature-list">
                         <li>Up to 5 subscriptions</li>
                         <li>Manual entry</li>
                         <li>Basic donut chart</li>
                         <li>3-month trends</li>
                         <li>Multiple payment methods</li>
                     </ul>
-                    <a href="#" class="btn btn-secondary" style="width:100%;justify-content:center;">Get Started</a>
+                    <a href="#" class="btn btn-secondary" style="justify-content:center;">Get Started</a>
                 </div>
+                <!-- Premium -->
                 <div class="pricing-card featured">
-                    <div class="tier">Premium</div>
-                    <div class="save-badge">Save 33%</div>
-                    <div class="price">$39.99 <span>/year</span></div>
-                    <div class="price-alt">or $4.99/month</div>
-                    <div class="desc">Full power. Full control.</div>
-                    <ul>
+                    <div class="tier-row">
+                        <span class="tier-name">Premium</span>
+                        <span class="save-pill">Save 33%</span>
+                    </div>
+                    <div class="price-block">
+                        <div class="price-main"><sup>$</sup>39<sub>.99/yr</sub></div>
+                    </div>
+                    <p class="price-alt">or $4.99 / month</p>
+                    <p class="price-desc">Full power. Full control.</p>
+                    <ul class="feature-list">
                         <li>Unlimited subscriptions</li>
                         <li>Receipt scanner (OCR)</li>
                         <li>Email scanning</li>
-                        <li>Smart predictions & insights</li>
+                        <li>Smart predictions &amp; insights</li>
                         <li>12-month trends</li>
                         <li>Bill calendar heat map</li>
                         <li>Price increase alerts</li>
                         <li>Unlimited payment methods</li>
-                        <li>CSV/PDF export</li>
+                        <li>CSV / PDF export</li>
                     </ul>
-                    <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Start Free Trial</a>
+                    <a href="#" class="btn btn-primary" style="justify-content:center;">Start Free Trial</a>
                 </div>
             </div>
         </section>
-
-        <footer>
-            <p>&copy; 2026 BillCast. Built with care for Mac & iOS.</p>
-            <p style="margin-top:8px;"><a href="./privacy.html">Privacy Policy</a> · <a href="./support.html">Support</a> · <a href="mailto:billcast.help@outlook.com">Contact</a></p>
-        </footer>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <a href="./index.html" class="footer-logo">Bill<em>Cast</em></a>
+            <div class="footer-links">
+                <a href="./privacy.html">Privacy Policy</a>
+                <a href="./support.html">Support</a>
+                <a href="mailto:billcast.help@outlook.com">Contact</a>
+            </div>
+            <span class="footer-copy">&copy; 2026 BillCast</span>
+        </div>
+    </footer>
 </body>
 </html>
